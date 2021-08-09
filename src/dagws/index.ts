@@ -1,8 +1,9 @@
-import {SocketActions, SocketClient, SocketParams, SocketVO} from "./type";
+import {Room, SocketActions, SocketClient, SocketParams, SocketVO} from "./type";
 
 const Clients = new Map<string, SocketClient>();
-function send(target: string, params: SocketParams) {
-  const ws = Clients.get(target).ws;
+const Rooms = new Map<number, Room>();
+function send(target: string | WebSocket, params: SocketParams) {
+  const ws = typeof target === "string" ? Clients.get(target).ws : target;
   ws.send(JSON.stringify(params));
 }
 const socketActions: SocketActions = {
@@ -18,8 +19,12 @@ const socketActions: SocketActions = {
       data: {state: "rooming"},
     });
   },
-  getRooms(ws, res) {
-    console.log(res);
+  getRooms(ws) {
+    send(ws, {
+      type: "connect",
+      msg: "连接成功",
+      data: Array.from(Rooms),
+    });
   },
 };
 

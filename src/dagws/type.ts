@@ -23,3 +23,7 @@ export interface SocketClient {
   ws: WebSocket;
   user: UserInfo;
 }
+
+export interface Room {
+  id: number;
+}
