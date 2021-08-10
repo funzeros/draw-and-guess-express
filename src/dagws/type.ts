@@ -1,7 +1,9 @@
 type ActionsFn = (ws: WebSocket, res: SocketVO) => void;
 export interface SocketActions {
   connect: ActionsFn;
-  getRooms: ActionsFn;
+  createRoom: ActionsFn;
+  enterRoom: ActionsFn;
+  getRoomList: ActionsFn;
 }
 export type SocketActionsEnum = keyof SocketActions;
 export interface SocketData<T = any> {
@@ -18,6 +20,8 @@ export type SocketParams = Partial<SocketVO>;
 
 export interface UserInfo {
   name: string;
+  roomId: number;
+  state: "rooming" | "offLine" | "waiting" | "gaming";
 }
 export interface SocketClient {
   ws: WebSocket;
@@ -26,4 +30,7 @@ export interface SocketClient {
 
 export interface Room {
   id: number;
+  player: string[];
+  owner: string;
+  status: "waiting" | "gaming";
 }
